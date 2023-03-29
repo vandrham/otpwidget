@@ -18,6 +18,8 @@ textColors = [ "#CC2222", "#CCCC00", "#CCCCCC" ]
 hiColors = [ "#CC4444", "#EEEE00", "#EEEEEE" ]
 barColor = "#CCCCCC"
 
+fnt = ("courier", "60", "bold")
+
 class OTPWidget(Frame):
 
     def copy_otp(self):
@@ -62,7 +64,7 @@ class OTPWidget(Frame):
                         style="Horizontal.TProgressbar",
                         mode="determinate")
 
-        self.otp.pack( side = TOP )
+        self.otp.pack( side = TOP, pady=30 )
         self.bar.pack( side = BOTTOM, fill =X ) 
 
 
@@ -84,7 +86,7 @@ def __main__():
     s = ttk.Style()
     s.theme_use('classic')
     s.configure('flat.TButton',
-                font = ("courier", "28", "bold"),
+                font = fnt,
                 background = bgColor,
                 foreground = textColors[2],
                 highlightcolor = hiColors[2],
@@ -99,7 +101,7 @@ def __main__():
     ], background = [ ('pressed', textColors[2]) ] )
 
     s.configure('warn.TButton',
-                font = ("courier", "28", "bold"),
+                font = fnt,
                 background = bgColor,
                 foreground = textColors[1],
                 highlightcolor = hiColors[1],
@@ -114,7 +116,7 @@ def __main__():
     ], background = [ ('pressed', textColors[1]) ] )
 
     s.configure('alarm.TButton',
-                font = ("courier", "28", "bold"),
+                font = fnt,
                 background = bgColor,
                 foreground = textColors[0],
                 highlightcolor = hiColors[0],
@@ -137,16 +139,20 @@ def __main__():
                     background=barColor,
                     );
 
-    authfile = os.path.expanduser("~/.google_authenticator")
+    authfile = os.path.expanduser("~/.secret")
+    accountfile = os.path.expanduser("~/.account")
     
     try:
         key = open(authfile,"r").readline().strip()
+        account = open(accountfile,"r").readline().strip()
     except IOError as e:
         root.withdraw();
         messagebox.showerror( "Error", "Failed to open %s:\n%s" % (authfile, str(e)))
         sys.exit(1)
 
+    root.title(account)
     app = OTPWidget(master=root, key=key)
+    app.configure(background=bgColor)
     root.bind_all("q", app.quit)
     root.bind_all("<Escape>", lambda x: sys.exit(0))
     try:
