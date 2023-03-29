@@ -18,7 +18,7 @@ textColors = [ "#CC2222", "#CCCC00", "#CCCCCC" ]
 hiColors = [ "#CC4444", "#EEEE00", "#EEEEEE" ]
 barColor = "#CCCCCC"
 
-fnt = ("courier", "60", "bold")
+fnt = ("baskerville", "60", "bold")
 
 class OTPWidget(Frame):
 
@@ -35,7 +35,7 @@ class OTPWidget(Frame):
         mod = int(30-(time.mktime(datetime.datetime.now().timetuple()) % 30));
         if mod == 30 or self.code is None:
             otp = pyotp.TOTP(self.key)
-            self.code = "%6.6s" % otp.now()
+            self.code = " %6.6s " % otp.now()
             print("update code: %s" % (self.code,))
             self.text.set(self.code)
         if mod < 5:
